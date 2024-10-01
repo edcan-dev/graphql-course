@@ -1,0 +1,48 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.3.4'
+	id 'io.spring.dependency-management' version '1.1.6'
+	id "com.netflix.dgs.codegen" version '6.3.0'
+}
+
+group = 'com.course'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencyManagement {
+	imports {
+		mavenBom("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release")
+	}
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation "com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter"
+	testImplementation "com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test"
+
+	implementation 'net.datafaker:datafaker:1.7.0'
+
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+generateJava{
+	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
+	packageName = 'com.course.graphql.generated' // The package name to use to generate sources
+	generateClient = true // Enable generating the type safe query API
+}
