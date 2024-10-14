@@ -23,8 +23,8 @@ import java.util.Optional;
 @DgsComponent
 public class FakeBookDataResolver {
 
-  @DgsData(parentType = "Query", field = "books")
-  public List<Book> booksWrittenBy(
+  @DgsQuery(field = "books")
+          public List<Book> booksWrittenBy(
     @InputArgument(name = "author") Optional<String> authorName
   ) {
     if(authorName.isEmpty() || authorName.get().isEmpty()) {
@@ -40,7 +40,7 @@ public class FakeBookDataResolver {
   public List<Book> getBooksByReleased(DataFetchingEnvironment dataFetchingEnvironment) {
 
     var releaseMap = (Map<String,Object>) dataFetchingEnvironment.getArgument("releasedInput");
-    var releasedInput = ReleaseHistoryInput.newBuilder()
+    ReleaseHistoryInput releasedInput = ReleaseHistoryInput.newBuilder()
       .printedEdition((boolean) releaseMap.get(DgsConstants.RELEASEHISTORYINPUT.PrintedEdition))
       .year((int) releaseMap.get(DgsConstants.RELEASEHISTORYINPUT.Year))
       .build();

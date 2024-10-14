@@ -31,6 +31,7 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation "com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter"
 	testImplementation "com.netflix.graphql.dgs:graphql-dgs-spring-graphql-starter-test"
+	implementation 'com.netflix.graphql.dgs:graphql-dgs-extended-scalars'
 
 	implementation 'net.datafaker:datafaker:1.7.0'
 
@@ -45,4 +46,9 @@ generateJava{
 	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
 	packageName = 'com.course.graphql.generated' // The package name to use to generate sources
 	generateClient = true // Enable generating the type safe query API
+	typeMapping = [
+	        "Date": "java.time.LocalDate",
+			"NonNegativeInt": "java.lang.Integer",
+			"Url": "java.net.URL"
+	]
 }
